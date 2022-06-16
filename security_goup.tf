@@ -2,7 +2,7 @@
 # SG(external-alb)
 ############################################
 resource "aws_security_group" "external_alb_sg" {
-  name   = "ingress_sg"
+  name   = "external_alb_sg"
   vpc_id = aws_vpc.sbcntr_vpc.id
 }
 
@@ -115,7 +115,7 @@ resource "aws_security_group_rule" "backend_app_sg_egress" {
 # SG(db)
 ############################################
 resource "aws_security_group" "db_sg" {
-  name   = "front_app_sg"
+  name   = "db_sg"
   vpc_id = aws_vpc.sbcntr_vpc.id
 }
 
