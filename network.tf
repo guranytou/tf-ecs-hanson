@@ -138,3 +138,12 @@ resource "aws_route_table" "ingress_container" {
   vpc_id = aws_vpc.sbcntr_vpc.id
 }
 
+resource "aws_route_table_association" "ingress_container_1a" {
+  subnet_id = aws_subnet.sbcntr_subnet_pri_container_1a.id
+  route_table_id = aws_route_table.ingress_container.id
+}
+
+resource "aws_route_table_association" "ingress_container_1c" {
+  subnet_id = aws_subnet.sbcntr_subnet_pri_container_1c.id
+  route_table_id = aws_route_table.ingress_container.id
+}
