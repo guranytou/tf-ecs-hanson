@@ -139,12 +139,12 @@ resource "aws_route_table" "container" {
 }
 
 resource "aws_route_table_association" "container_1a" {
-  subnet_id = aws_subnet.sbcntr_subnet_pri_container_1a.id
+  subnet_id      = aws_subnet.sbcntr_subnet_pri_container_1a.id
   route_table_id = aws_route_table.container.id
 }
 
 resource "aws_route_table_association" "container_1c" {
-  subnet_id = aws_subnet.sbcntr_subnet_pri_container_1c.id
+  subnet_id      = aws_subnet.sbcntr_subnet_pri_container_1c.id
   route_table_id = aws_route_table.container.id
 }
 
@@ -157,11 +157,11 @@ resource "aws_route_table" "db" {
 }
 
 resource "aws_route_table_association" "db_1a" {
-  subnet_id = aws_subnet.sbcntr_subnet_pri_db_1a.id
+  subnet_id      = aws_subnet.sbcntr_subnet_pri_db_1a.id
   route_table_id = aws_route_table.db.id
 }
 
 resource "aws_route_table_association" "db_1c" {
-  subnet_id = aws_subnet.sbcntr_subnet_pri_db_1c.id
+  subnet_id      = aws_subnet.sbcntr_subnet_pri_db_1c.id
   route_table_id = aws_route_table.db.id
 }
