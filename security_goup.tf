@@ -54,7 +54,7 @@ resource "aws_security_group_rule" "front_app_sg_egress" {
 # SG(internal-alb)
 ############################################
 resource "aws_security_group" "internal_alb_sg" {
-  name   = "front_app_sg"
+  name   = "internal_alb_sg"
   vpc_id = aws_vpc.sbcntr_vpc.id
 }
 
@@ -89,7 +89,7 @@ resource "aws_security_group_rule" "internal_alb_sg_egress" {
 # SG(backend-app)
 ############################################
 resource "aws_security_group" "backend_app_sg" {
-  name   = "front_app_sg"
+  name   = "backend_app_sg"
   vpc_id = aws_vpc.sbcntr_vpc.id
 }
 
@@ -150,7 +150,7 @@ resource "aws_security_group_rule" "db_sg_egress" {
 # SG(management)
 ############################################
 resource "aws_security_group" "management_sg" {
-  name   = "front_app_sg"
+  name   = "management_sg"
   vpc_id = aws_vpc.sbcntr_vpc.id
 }
 
