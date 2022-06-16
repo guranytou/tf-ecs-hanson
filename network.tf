@@ -129,3 +129,12 @@ resource "aws_route_table_association" "igw_ingress_1c" {
   subnet_id      = aws_subnet.sbcntr_subnet_pub_ingress_1c.id
   route_table_id = aws_route_table.igw_ingress.id
 }
+
+####################################################
+# Route Table(Public/Ingress - Private/Container)
+####################################################
+
+resource "aws_route_table" "ingress_container" {
+  vpc_id = aws_vpc.sbcntr_vpc.id
+}
+
