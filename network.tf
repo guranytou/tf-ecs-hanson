@@ -107,7 +107,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 ######################################
-# Route Table(IGW - Public/Ingress)
+# Route Table(IGW - Public)
 ######################################
 
 resource "aws_route_table" "igw_ingress" {
@@ -127,6 +127,15 @@ resource "aws_route_table_association" "igw_ingress_1a" {
 
 resource "aws_route_table_association" "igw_ingress_1c" {
   subnet_id      = aws_subnet.sbcntr_subnet_pub_ingress_1c.id
+  route_table_id = aws_route_table.igw_ingress.id
+}
+resource "aws_route_table_association" "management_1a" {
+  subnet_id      = aws_subnet.sbcntr_subnet_pub_manage_1a.id
+  route_table_id = aws_route_table.igw_ingress.id
+}
+
+resource "aws_route_table_association" "management_1c" {
+  subnet_id      = aws_subnet.sbcntr_subnet_pub_manage_1c.id
   route_table_id = aws_route_table.igw_ingress.id
 }
 
@@ -164,22 +173,4 @@ resource "aws_route_table_association" "db_1a" {
 resource "aws_route_table_association" "db_1c" {
   subnet_id      = aws_subnet.sbcntr_subnet_pri_db_1c.id
   route_table_id = aws_route_table.db.id
-}
-
-####################################################
-# Route Table(Public/management)
-####################################################
-
-resource "aws_route_table" "management" {
-  vpc_id = aws_vpc.sbcntr_vpc.id
-}
-
-resource "aws_route_table_association" "management_1a" {
-  subnet_id      = aws_subnet.sbcntr_subnet_pub_manage_1a.id
-  route_table_id = aws_route_table.management.id
-}
-
-resource "aws_route_table_association" "management_1c" {
-  subnet_id      = aws_subnet.sbcntr_subnet_pub_manage_1c.id
-  route_table_id = aws_route_table.management.id
 }
