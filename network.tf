@@ -174,3 +174,8 @@ resource "aws_route_table_association" "db_1c" {
   subnet_id      = aws_subnet.sbcntr_subnet_pri_db_1c.id
   route_table_id = aws_route_table.db.id
 }
+
+####################################################
+# Private Link/ECR
+####################################################
+
