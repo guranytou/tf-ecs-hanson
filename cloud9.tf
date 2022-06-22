@@ -16,7 +16,8 @@ resource "aws_instance" "cloud9" {
   ami           = "ami-01a07b864ab0dd077"
   instance_type = "t2.micro"
   vpc_security_group_ids = [
-    aws_security_group.automation_sg_for_cloud9.id
+    aws_security_group.automation_sg_for_cloud9.id,
+    aws_security_group.management_sg.id,
   ]
 
   tags = {
