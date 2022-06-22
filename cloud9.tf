@@ -64,6 +64,29 @@ resource "aws_security_group_rule" "automation_sg_for_cloud9_egress" {
 
 }
 
-############################################
-# IAM for Cloud9
-############################################
+resource "aws_iam_role" "cloud9" {
+  name               = "sbcntr-cloud-role"
+  assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
+}
+
+data "aws_iam_policy_document" "instance_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "cloud9" {
+  name        = "sbcntr-AccessingECRRepositoryPolicy"
+  description = "Policy to access ECR repo from Cloud9 instance"
+  policy      = file("cloud9_ecr_policy.json")
+}
+
+resource "aws_iam_role_policy_attachment" "cloud9" {
+  role       = aws_iam_role.cloud9.name
+  policy_arn = aws_iam_policy.cloud9.arn
+}
