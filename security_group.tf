@@ -67,10 +67,19 @@ resource "aws_security_group_rule" "internal_alb_sg_ingress_for_front_app" {
   security_group_id        = aws_security_group.internal_alb_sg.id
 }
 
-resource "aws_security_group_rule" "internal_alb_sg_ingress_for_management_sub" {
+resource "aws_security_group_rule" "internal_alb_sg_ingress_for_management_sub_prod" {
   type                     = "ingress"
   from_port                = 80
   to_port                  = 80
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.management_sg.id
+  security_group_id        = aws_security_group.internal_alb_sg.id
+}
+
+resource "aws_security_group_rule" "internal_alb_sg_ingress_for_management_sub_test" {
+  type                     = "ingress"
+  from_port                = 10080
+  to_port                  = 10080
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.management_sg.id
   security_group_id        = aws_security_group.internal_alb_sg.id

@@ -252,3 +252,21 @@ resource "aws_vpc_endpoint" "s3" {
     Name = "sbcntr-vpce-s3"
   }
 }
+
+resource "aws_vpc_endpoint" "cloudwatchlogs" {
+  vpc_id            = aws_vpc.sbcntr_vpc.id
+  service_name      = "com.amazonaws.ap-northeast-1.logs"
+  vpc_endpoint_type = "Interface"
+  subnet_ids = [
+    aws_subnet.sbcntr_subnet_pri_vpce_1a.id,
+    aws_subnet.sbcntr_subnet_pri_vpce_1c.id,
+  ]
+
+  security_group_ids = [
+    aws_security_group.vpce_sg.id,
+  ]
+
+  tags = {
+    Name = "sbcntr-vpce-logs"
+  }
+}
