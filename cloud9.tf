@@ -13,15 +13,16 @@ resource "aws_cloud9_environment_ec2" "management" {
 # EC2 for Cloud9（Cloud9では自動でEC2が立ち上がるためimport用コード）
 ########################################################################
 resource "aws_instance" "cloud9" {
-  ami           = "ami-01a07b864ab0dd077"
+  ami           = "ami-0349a419956cf1166"
   instance_type = "t2.micro"
   vpc_security_group_ids = [
     aws_security_group.automation_sg_for_cloud9.id,
     aws_security_group.management_sg.id,
   ]
+  iam_instance_profile = aws_iam_instance_profile.cloud9.name
 
   tags = {
-    Name = "aws-cloud9-sbcntr-dev-16239254061e4c2c821fd158a65ad376"
+    Name = "aws-cloud9-sbcntr-dev-91aba18ff4864963b9a9cc45086d2009"
   }
 
   lifecycle {
@@ -33,12 +34,12 @@ resource "aws_instance" "cloud9" {
 }
 
 resource "aws_security_group" "automation_sg_for_cloud9" {
-  name        = "aws-cloud9-sbcntr-dev-16239254061e4c2c821fd158a65ad376-InstanceSecurityGroup-YQ3MNI58UUDV"
-  description = "Security group for AWS Cloud9 environment aws-cloud9-sbcntr-dev-16239254061e4c2c821fd158a65ad376"
+  name        = "aws-cloud9-sbcntr-dev-91aba18ff4864963b9a9cc45086d2009-InstanceSecurityGroup-K0D4JHOP5RJ2"
+  description = "Security group for AWS Cloud9 environment aws-cloud9-sbcntr-dev-91aba18ff4864963b9a9cc45086d2009"
   vpc_id      = aws_vpc.sbcntr_vpc.id
 
   tags = {
-    Name = "aws-cloud9-sbcntr-dev-16239254061e4c2c821fd158a65ad376"
+    Name = "aws-cloud9-sbcntr-dev-91aba18ff4864963b9a9cc45086d2009"
   }
 }
 
@@ -64,6 +65,10 @@ resource "aws_security_group_rule" "automation_sg_for_cloud9_egress" {
 
 }
 
+resource "aws_iam_instance_profile" "cloud9" {
+  name = "sbcntr-cloud-role"
+  role = aws_iam_role.cloud9.name
+}
 resource "aws_iam_role" "cloud9" {
   name               = "sbcntr-cloud-role"
   assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json

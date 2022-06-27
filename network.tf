@@ -100,6 +100,28 @@ resource "aws_subnet" "sbcntr_subnet_pub_manage_1c" {
 }
 
 #############################
+# Subnet - Private/VPCE
+#############################
+
+resource "aws_subnet" "sbcntr_subnet_pri_vpce_1a" {
+  vpc_id     = aws_vpc.sbcntr_vpc.id
+  cidr_block = "10.0.248.0/24"
+
+  tags = {
+    Name = "sbcntr-subnet-private-egress-1a"
+  }
+}
+
+resource "aws_subnet" "sbcntr_subnet_pri_vpce_1c" {
+  vpc_id     = aws_vpc.sbcntr_vpc.id
+  cidr_block = "10.0.249.0/24"
+
+  tags = {
+    Name = "sbcntr-subnet-private-egress-1c"
+  }
+}
+
+#############################
 # Internet Gateway
 #############################
 
@@ -185,6 +207,14 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
   service_name        = "com.amazonaws.ap-northeast-1.ecr.dkr"
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
+  subnet_ids = [
+    aws_subnet.sbcntr_subnet_pri_vpce_1a.id,
+    aws_subnet.sbcntr_subnet_pri_vpce_1c.id,
+  ]
+
+  security_group_ids = [
+    aws_security_group.vpce_sg.id,
+  ]
 
   tags = {
     Name = "sbcntr-vpce-ecr-dkr"
@@ -196,6 +226,14 @@ resource "aws_vpc_endpoint" "ecr_api" {
   service_name        = "com.amazonaws.ap-northeast-1.ecr.api"
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
+  subnet_ids = [
+    aws_subnet.sbcntr_subnet_pri_vpce_1a.id,
+    aws_subnet.sbcntr_subnet_pri_vpce_1c.id,
+  ]
+
+  security_group_ids = [
+    aws_security_group.vpce_sg.id,
+  ]
 
   tags = {
     Name = "sbcntr-vpce-ecr-api"
@@ -206,6 +244,9 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_id            = aws_vpc.sbcntr_vpc.id
   service_name      = "com.amazonaws.ap-northeast-1.s3"
   vpc_endpoint_type = "Gateway"
+  route_table_ids = [
+    aws_route_table.container.id,
+  ]
 
   tags = {
     Name = "sbcntr-vpce-s3"

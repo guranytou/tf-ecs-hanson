@@ -162,3 +162,48 @@ resource "aws_security_group_rule" "management_sg_egress" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.management_sg.id
 }
+
+############################################
+# SG(VPCE)
+############################################
+
+resource "aws_security_group" "vpce_sg" {
+  name   = "vpce_sg"
+  vpc_id = aws_vpc.sbcntr_vpc.id
+}
+
+resource "aws_security_group_rule" "vpce_sg_ingress_for_back_app" {
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.backend_app_sg.id
+  security_group_id        = aws_security_group.vpce_sg.id
+}
+
+resource "aws_security_group_rule" "vpce_sg_ingress_for_front_app" {
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.front_app_sg.id
+  security_group_id        = aws_security_group.vpce_sg.id
+}
+
+resource "aws_security_group_rule" "vpce_sg_ingress_for_management" {
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.management_sg.id
+  security_group_id        = aws_security_group.vpce_sg.id
+}
+
+resource "aws_security_group_rule" "vpce_sg_egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.vpce_sg.id
+}
